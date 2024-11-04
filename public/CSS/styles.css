@@ -5,7 +5,7 @@
     box-sizing: border-box;
 }
 
-/* Body styling */
+/* Body styling: */
 body {
     display: flex;
     flex-direction: column;
