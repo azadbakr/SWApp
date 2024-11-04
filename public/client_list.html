@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client List</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Client List</h1>
+    </header>
+    <nav>
+        <ul class="navbar">
+            <li><a href="help.html">Help</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="client_list.html">Client List</a></li>
+            <li><a href="client_details.html">Client Details</a></li>
+            <li><a href="add_client.html">Add Client</a></li>
+            <li><a href="index.html" class="logout-link" onclick="return confirmNavigation()">Log Out</a></li>
+        </ul>
+    </nav>
+
+    <div class="content">
+        <div class="centered-table-container">
+            <h2 class="table-title">List of Clients</h2>
+            <table id="clientTable">
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Case Number</th>
+                        <th>Date of Birth</th>
+                        <th>Gender</th>
+                        <th>Language</th>
+                        <th>Action</th> <!-- New column for opening the case -->
+                    </tr>
+                </thead>
+                <tbody id="clientList">
+                    <!-- Client rows will be added here by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>    
+
+    <script>
+        function displayClients() {
+            fetch('/api/clients')
+                .then(response => response.json())
+                .then(clients => {
+                    const clientList = document.getElementById('clientList');
+                    clients.forEach(client => {
+                        const row = document.createElement('tr');
+
+                        // Format date to MM/DD/YYYY
+                        const date = new Date(client.dob);
+                        const formattedDate = `${(date.getMonth() + 1).toString().padStart(2, '0')}/${
+                            date.getDate().toString().padStart(2, '0')}/${
+                            date.getFullYear()}`;
+
+                        // Create clickable link for "Open the Case"
+                        const openCaseLink = `<a href="client_details.html" onclick="saveClientId('${client.caseNumber}')">Open the Case</a>`;
+
+                        // Populate the row with client details
+                        row.innerHTML = `
+                            <td>${client.firstName}</td>
+                            <td>${client.lastName}</td>
+                            <td>${client.caseNumber}</td>
+                            <td>${formattedDate}</td>
+                            <td>${client.gender}</td>
+                            <td>${client.language}</td>
+                            <td>${openCaseLink}</td>
+                        `;
+                        clientList.appendChild(row);
+                    });
+                })
+                .catch(error => console.error('Error fetching clients:', error));
+        }
+
+        // Function to save client ID to localStorage
+        function saveClientId(caseNumber) {
+            localStorage.setItem("selectedClientId", caseNumber);
+        }
+
+        displayClients();
+
+    </script>
+    
+    <script>
+        function confirmNavigation() {
+            return confirm("Are you sure you want to log out?");
+        }
+    </script>
+
+</body>
+</html>

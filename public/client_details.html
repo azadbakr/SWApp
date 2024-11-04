@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Details</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Client Details</h1>
+    </header>
+    <nav>
+        <ul class="navbar">
+            <li><a href="help.html">Help</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="client_list.html">Client List</a></li>
+            <li><a href="client_details.html">Client Details</a></li>
+            <li><a href="add_client.html">Add Client</a></li>
+            <li><a href="index.html" class="logout-link" onclick="return confirmNavigation()">Log Out</a></li>
+        </ul>
+    </nav>
+
+    <div class="content">
+        <div class="details-container">
+            <h2 id="clientName"></h2>
+    
+            <!-- Demographics Section -->
+            <h3>Demographics</h3>
+            <table id="demographicsTable">
+                <tbody>
+                    <tr><td><strong>First Name:</strong></td><td id="firstName"></td></tr>
+                    <tr><td><strong>Last Name:</strong></td><td id="lastName"></td></tr>
+                    <tr><td><strong>Case Number:</strong></td><td id="caseNumber"></td></tr>
+                    <tr><td><strong>Date of Birth:</strong></td><td id="dob"></td></tr>
+                    <tr><td><strong>Gender:</strong></td><td id="gender"></td></tr>
+                    <tr><td><strong>Language:</strong></td><td id="language"></td></tr>
+                </tbody>
+            </table>
+            <button onclick="editSection('demographics')">Edit Demographics</button>
+    
+            <!-- Contact Information Section -->
+            <h3>Contact Information</h3>
+            <table id="contactInfoTable">
+                <tbody>
+                    <tr><td><strong>Residential Address:</strong></td><td id="residentialAddress"></td></tr>
+                    <tr><td><strong>Mailing Address:</strong></td><td id="mailingAddress"></td></tr>
+                    <tr><td><strong>Phone Number:</strong></td><td id="phoneNumber"></td></tr>
+                </tbody>
+            </table>
+            <button onclick="editSection('contactInfo')">Edit Contact Information</button>
+    
+            <!-- Collateral Contacts Section -->
+            <h3>Collateral Contacts</h3>
+            <table id="collateralContactsTable">
+                <tbody>
+                    <tr><td><strong>First Name:</strong></td><td id="collateralFirstName"></td></tr>
+                    <tr><td><strong>Last Name:</strong></td><td id="collateralLastName"></td></tr>
+                    <tr><td><strong>Relation:</strong></td><td id="relation"></td></tr>
+                    <tr><td><strong>Phone Number:</strong></td><td id="collateralPhone"></td></tr>
+                    <tr><td><strong>Email:</strong></td><td id="collateralEmail"></td></tr>
+                </tbody>
+            </table>
+            <button onclick="editSection('collateralContacts')">Edit Collateral Contacts</button>
+
+            <!-- Close the Case Button -->
+            <button id="closeCaseButton" onclick="closeCase()">Close the Case</button>
+        </div>
+    </div>    
+
+    <script>
+        const selectedClientId = localStorage.getItem("selectedClientId");
+
+        function displayClientDetails() {
+            fetch('/api/clients')
+                .then(response => response.json())
+                .then(clients => {
+                    const client = clients.find(client => client.caseNumber === selectedClientId);
+                    
+                    if (client) {
+                        document.getElementById("clientName").textContent = `${client.firstName} ${client.lastName}`;
+                        document.getElementById("firstName").textContent = client.firstName;
+                        document.getElementById("lastName").textContent = client.lastName;
+                        document.getElementById("caseNumber").textContent = client.caseNumber;
+                        document.getElementById("dob").textContent = client.dob;
+                        document.getElementById("gender").textContent = client.gender;
+                        document.getElementById("language").textContent = client.language;
+                        document.getElementById("residentialAddress").textContent = client.residentialAddress;
+                        document.getElementById("mailingAddress").textContent = client.mailingAddress;
+                        document.getElementById("phoneNumber").textContent = client.phoneNumber;
+                        document.getElementById("collateralFirstName").textContent = client.collateralFirstName;
+                        document.getElementById("collateralLastName").textContent = client.collateralLastName;
+                        document.getElementById("relation").textContent = client.relation;
+                        document.getElementById("collateralPhone").textContent = client.collateralPhone;
+                        document.getElementById("collateralEmail").textContent = client.collateralEmail;
+                    } else {
+                        document.getElementById("clientName").textContent = "Client not found.";
+                    }
+                })
+                .catch(error => console.error('Error fetching client details:', error));
+        }
+
+        displayClientDetails();
+
+        // Make fields editable and save changes
+        function editSection(section) {
+            const fields = {
+                demographics: ["firstName", "lastName", "caseNumber", "dob", "gender", "language"],
+                contactInfo: ["residentialAddress", "mailingAddress", "phoneNumber"],
+                collateralContacts: ["collateralFirstName", "collateralLastName", "relation", "collateralPhone", "collateralEmail"]
+            };
+
+            fields[section].forEach(id => {
+                const element = document.getElementById(id);
+                const originalValue = element.textContent;
+                element.innerHTML = `<input type="text" value="${originalValue}">`;
+            });
+
+            // Change the button to "Save"
+            const button = event.target;
+            button.textContent = "Save";
+            button.onclick = function() { saveSection(section); };
+        }
+
+        function saveSection(section) {
+            const fields = {
+                demographics: ["firstName", "lastName", "caseNumber", "dob", "gender", "language"],
+                contactInfo: ["residentialAddress", "mailingAddress", "phoneNumber"],
+                collateralContacts: ["collateralFirstName", "collateralLastName", "relation", "collateralPhone", "collateralEmail"]
+            };
+
+            const updatedData = {};
+            fields[section].forEach(id => {
+                const inputElement = document.getElementById(id).querySelector("input");
+                const newValue = inputElement.value;
+                document.getElementById(id).textContent = newValue;
+                updatedData[id] = newValue;
+            });
+
+            // Update the client data in the JSON file or backend
+            fetch(`/api/clients/${selectedClientId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(updatedData)
+            })
+            .then(response => response.json())
+            .then(data => console.log("Updated client data:", data))
+            .catch(error => console.error("Error updating client:", error));
+
+            // Change the button back to "Edit"
+            const button = event.target;
+            button.textContent = "Edit " + section.charAt(0).toUpperCase() + section.slice(1);
+            button.onclick = function() { editSection(section); };
+        }
+
+        function closeCase() {
+            document.getElementById("clientName").textContent = "";
+            document.querySelectorAll("#demographicsTable td, #contactInfoTable td, #collateralContactsTable td").forEach(td => td.textContent = "");
+            localStorage.removeItem("selectedClientId");
+            alert("The case has been closed. You can now open another case.");
+        }
+
+        function confirmNavigation() {
+            return confirm("Are you sure you want to log out?");
+        }
+    </script>
+</body>
+</html>

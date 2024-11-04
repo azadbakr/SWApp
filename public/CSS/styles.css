@@ -1,0 +1,383 @@
+/* Basic reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body styling */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+/* Header styling */
+header {
+    text-align: center;
+    padding: 1.5rem;
+    background-color: #4CAF50;
+    color: white;
+}
+
+header h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+header h2 {
+    font-size: 1.2rem;
+    color: #ffffff;
+}
+
+/* Navigation bar styling */
+nav {
+    width: 100%;
+    background-color: #333;
+    padding: 1rem 0;
+}
+
+.navbar {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+}
+
+.navbar li {
+    margin: 0 1rem;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.navbar a:hover {
+    background-color: #4CAF50;
+}
+
+.navbar .logout-link:hover {
+    background-color: #912323;
+}
+
+/* Center the login form container */
+.login-container {
+    width: 100%;
+    max-width: 400px;
+    padding: 2rem;
+    margin: auto;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+/* Form heading */
+.login-container h1 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+/* Form input styling */
+label {
+    display: block;
+    margin: 1rem 0 0.5rem;
+    font-weight: bold;
+    color: #333;
+}
+
+
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+button {
+    width: 100%;
+    padding: 0.7rem;
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #2f7f33;
+}
+
+/* Footer styling */
+footer {
+    margin-top: auto;
+    text-align: center;
+    padding: 1rem;
+    background-color: #4CAF50;
+    color: white;
+}
+
+footer .description {
+    max-width: 600px;
+    font-size: 1rem;
+    color: #ffffff;
+    margin: auto;
+}
+
+
+/* Add Client Form Styling */
+.content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+}
+
+#addClientForm {
+    width: 80%;
+    max-width: 600px;
+    background-color: #f9f9f9;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Style fieldset and legend */
+fieldset {
+    border: 1px solid #ccc;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-radius: 4px;
+}
+
+legend {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #4CAF50;
+    padding: 0 10px;
+}
+
+/* Input and select fields styling */
+#addClientForm label {
+    display: block;
+    font-weight: bold;
+    margin-top: 1rem;
+    color: #333;
+}
+
+#addClientForm input[type="text"],
+#addClientForm input[type="date"],
+#addClientForm input[type="email"],
+#addClientForm input[type="tel"],
+#addClientForm select {
+    width: 100%;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Submit button styling */
+#addClientForm button {
+    width: 100%;
+    padding: 0.7rem;
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#addClientForm button:hover {
+    background-color: #3b8f3a;
+}
+
+/* Table styling */
+#clientTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+#clientTable th, #clientTable td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+#clientTable th {
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+}
+
+#clientTable tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#clientTable tr:hover {
+    background-color: #e0e0e0;
+}
+
+/* Center the table container and title */
+.centered-table-container {
+    max-width: 80%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.table-title {
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+/* Details container styling */
+.details-container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 1.5rem;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.details-container h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    color: #333;
+}
+
+.details-container h3 {
+    margin-top: 1.5rem;
+    font-size: 1.5rem;
+    color: #4CAF50;
+    border-bottom: 2px solid #4CAF50;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Table styling for sections */
+.details-container table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.5rem;
+}
+
+.details-container td {
+    padding: 0.75rem;
+    vertical-align: top;
+    border-bottom: 1px solid #ddd;
+}
+
+.details-container td:first-child {
+    font-weight: bold;
+    color: #333;
+    width: 35%;
+}
+
+.details-container td:last-child {
+    color: #555;
+}
+
+.details-container tr:last-child td {
+    border-bottom: none;
+}
+
+#closeCaseButton {
+    display: block;
+    width: 100%;
+    padding: 0.75rem;
+    margin-top: 1.5rem;
+    background-color: #d9534f; /* Red color to indicate closure */
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#closeCaseButton:hover {
+    background-color: #c9302c;
+}
+
+/* Styling for the Log Out link */
+.logout-link {
+    color: #d9534f; /* Red color for the Log Out link */
+    font-weight: bold;
+    transition: color 0.3s;
+    background-color: #c9302c;
+
+}
+
+/* Search container styling */
+.search-container {
+    text-align: center;
+    margin: 2rem auto;
+    width: 80%;
+    max-width: 600px;
+}
+
+.search-container input {
+    width: 70%;
+    padding: 0.5rem;
+    margin-right: 0.5rem;
+}
+
+.search-container button {
+    padding: 0.5rem 1rem;
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.search-container button:hover {
+    background-color: #2f7f33;
+}
+
+#searchResults table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+#searchResults th, #searchResults td {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+}
+
+#searchResults tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#searchResults tr:hover {
+    background-color: #e0e0e0;
+}
+

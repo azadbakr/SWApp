@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Worker App - Login</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <!-- Header Section -->
+    <header>
+        <h1>Welcome</h1>
+        <h2>to the Aging and Disability Services web application</h2>
+    </header>
+
+    <!-- Login Form Section -->
+    <div class="login-container">
+        <h1>Social Worker Portal</h1>
+        <p>Please enter your credentials</p>
+        <form id="loginForm" action="/dashboard" method="POST">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required>
+            
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+            
+            <button type="submit">Login</button>
+
+            <p id="forgot" style="color: #0040ff; display: block; margin: 1rem 0 0.5rem;">
+            Forgot Username/Password?<br>Contact IT
+            </p>
+        </form>
+
+        <p id="error-message" style="color: red;"></p>
+    </div>
+
+    <!-- Footer Section -->
+    <footer>
+        <p class="description">
+            This is a powerful application for ADS social workers to manage client cases, 
+            view and edit demographics and collateral contacts, and track health conditions, 
+            daily needs, and services provided.
+        </p>
+    </footer>
+
+    <script>
+        const validUsername = "Reza";
+        const validPassword = "1234";
+    
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+    
+            if (username === validUsername && password === validPassword) {
+                alert("Login successful!");
+                window.location.href = "dashboard.html";
+            } else {
+                document.getElementById("error-message").textContent = "Incorrect username or password! Try again.";
+            }
+        });
+    </script>
+</body>
+</html>

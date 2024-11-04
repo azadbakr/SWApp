@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Help</h1>
+    </header>
+    <nav>
+        <!-- Include the same nav bar -->
+        <ul class="navbar">
+            <li><a href="help.html">Help</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="client_list.html">Client List</a></li>
+            <li><a href="client_details.html">Client Details</a></li>
+            <li><a href="add_client.html">Add Client</a></li>
+            <li><a href="index.html" class="logout-link" onclick="return confirmNavigation()">Log Out</a></li>
+    </nav>
+    
+    <div>
+        <p style="margin-bottom: 2%; margin-top: 2%; margin-left: 10%; margin-right: 10%;">To quickly locate a client, use the Search feature on the <strong>Dashboard</strong>. Simply enter the client’s first name, last name, or case number in the search bar, and click Search to view matching results.</p>
+        <p style="margin-bottom: 2%; margin-top: 2%; margin-left: 10%; margin-right: 10%;";">If you navigate to the <strong>Client List</strong>, you will see your entire caseload.</p>
+        <p style="margin-bottom: 2%; margin-top: 2%; margin-left: 10%; margin-right: 10%;">To view a client’s demographic information, click on <strong>Client Details</strong> or simply select the client’s name from the list.</p>
+        <p style="margin-bottom: 2%; margin-top: 2%; margin-left: 10%; margin-right: 10%;">You can easily add a new client to your caseload by using the <strong>Add Client</strong> button.</p>
+    </div>
+
+    <script>
+        function confirmNavigation() {
+            return confirm("Are you sure you want to log out?");
+        }
+
+    </script>
+    
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Dashboard</h1>
+    </header>
+    
+    <!-- Navigation Bar -->
+    <nav>
+        <ul class="navbar">
+            <li><a href="help.html">Help</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="client_list.html">Client List</a></li>
+            <li><a href="client_details.html">Client Details</a></li>
+            <li><a href="add_client.html">Add Client</a></li>
+            <li><a href="index.html" class="logout-link" onclick="return confirmNavigation()">Log Out</a></li>
+        </ul>
+    </nav>
+
+    <div>
+        <p style="text-align: center; margin-bottom: 2%; margin-top: 2%; margin-left: 10%; margin-right: 10%;">Use the navigation bar to access different features of the application.<br>For more details on each screen's functionality, click the <strong>Help</strong> button on the far left of the navigation bar.</p>
+    </div>
+
+    <!-- Search Section -->
+    <div class="search-container">
+        <h2>Search Clients</h2>
+        <input type="text" id="searchQuery" placeholder="Enter first/last name or case number" />
+        <button onclick="searchClients()">Search</button>
+        <div id="searchResults"></div>
+    </div>
+
+    <script>
+        function searchClients() {
+            const query = document.getElementById('searchQuery').value.trim().toLowerCase();
+            const resultsContainer = document.getElementById('searchResults');
+            resultsContainer.innerHTML = ""; // Clear previous results
+
+            if (!query) {
+                resultsContainer.innerHTML = "<p>Please enter a search term.</p>";
+                return;
+            }
+
+            fetch('/api/clients')
+                .then(response => response.json())
+                .then(clients => {
+                    const results = clients.filter(client =>
+                        client.firstName.toLowerCase().includes(query) ||
+                        client.lastName.toLowerCase().includes(query) ||
+                        client.caseNumber.includes(query)
+                    );
+
+                    if (results.length > 0) {
+                        const table = document.createElement('table');
+                        table.innerHTML = `
+                            <tr>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Case Number</th>
+                                <th>Action</th>
+                            </tr>
+                        `;
+
+                        results.forEach(client => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td>${client.firstName}</td>
+                                <td>${client.lastName}</td>
+                                <td>${client.caseNumber}</td>
+                                <td><a href="client_details.html" onclick="saveClientId('${client.caseNumber}')">Open Case</a></td>
+                            `;
+                            table.appendChild(row);
+                        });
+                        resultsContainer.appendChild(table);
+                    } else {
+                        resultsContainer.innerHTML = "<p>No matching clients found.</p>";
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching clients:", error);
+                    resultsContainer.innerHTML = "<p>Error loading clients.</p>";
+                });
+        }
+
+        function saveClientId(caseNumber) {
+            localStorage.setItem("selectedClientId", caseNumber);
+        }
+
+        function confirmNavigation() {
+            return confirm("Are you sure you want to log out?");
+        }
+    </script>
+
+</body>
+</html>

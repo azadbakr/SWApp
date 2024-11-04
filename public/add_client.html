@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Client</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Add Client</h1>
+    </header>
+    <nav>
+        <ul class="navbar">
+            <li><a href="help.html" onclick="return confirmNavigation()">Help</a></li>
+            <li><a href="dashboard.html" onclick="return confirmNavigation()">Dashboard</a></li>
+            <li><a href="client_list.html" onclick="return confirmNavigation()">Client List</a></li>
+            <li><a href="client_details.html" onclick="return confirmNavigation()">Client Details</a></li>
+            <li><a href="add_client.html" onclick="return confirmNavigation()">Add Client</a></li>
+            <li><a href="index.html" class="logout-link" onclick="return confirmLogOut()">Log Out</a></li>
+        </ul>
+    </nav>
+    
+    <div class="content">
+        <form id="addClientForm">
+            <!-- Demographics Section -->
+            <fieldset>
+                <legend>Demographics</legend>
+                <label for="firstName">First Name</label>
+                <input type="text" id="firstName" required>
+
+                <label for="lastName">Last Name</label>
+                <input type="text" id="lastName" required>
+
+                <label for="caseNumber">Case Number</label>
+                <input type="text" id="caseNumber" required>
+
+                <label for="dob">Date of Birth</label>
+                <input type="date" id="dob" required>
+
+                <label for="gender">Gender</label>
+                <select id="gender" required>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
+
+                <label for="language">Language</label>
+                <select id="language" required>
+                    <option value="English">English</option>
+                    <option value="Spanish">Spanish</option>
+                    <option value="French">French</option>
+                    <option value="Hindi">Hindi</option>
+                    <option value="Arabic">Arabic</option>
+                    <option value="Persian">Persian</option>
+                    <option value="Mandarin">Mandarin</option>
+                    <option value="Russian">Russian</option>
+                    <option value="Urdu">Urdu</option>
+                    <option value="Other">Other</option>
+                </select>
+            </fieldset>
+
+            <!-- Contact Information Section -->
+            <fieldset>
+                <legend>Contact Information</legend>
+                <label for="residentialAddress">Residential Address</label>
+                <input type="text" id="residentialAddress" required>
+
+                <label for="mailingAddress">Mailing Address</label>
+                <input type="text" id="mailingAddress" required>
+
+                <label for="phoneNumber">Phone Number</label>
+                <input type="text" id="phoneNumber" required>
+            </fieldset>
+
+            <!-- Collateral Contacts Section -->
+            <fieldset>
+                <legend>Collateral Contacts</legend>
+                <label for="collateralFirstName">First Name</label>
+                <input type="text" id="collateralFirstName" required>
+
+                <label for="collateralLastName">Last Name</label>
+                <input type="text" id="collateralLastName" required>
+
+                <label for="relation">Relation</label>
+                <select id="relation" required>
+                    <option value="Grand Parent">Grandparent</option>
+                    <option value="Parent">Parent</option>
+                    <option value="Spouse">Spouse</option>
+                    <option value="Child">Child</option>
+                    <option value="Grand Child">Grandchild</option>
+                    <option value="Aunt">Aunt</option>
+                    <option value="Uncle">Uncle</option>
+                    <option value="Niece">Niece</option>
+                    <option value="Nephew">Nephew</option>
+                    <option value="Cousin">Cousin</option>
+                    <option value="Friend">Friend</option>
+                    <option value="Other">Other</option>
+                </select>
+
+                <label for="collateralPhone">Phone Number</label>
+                <input type="text" id="collateralPhone" required>
+
+                <label for="collateralEmail">Email</label>
+                <input type="email" id="collateralEmail" required>
+            </fieldset>
+
+            <button type="button" onclick="addClient()">Submit</button>
+        </form>
+        <p id="error-message" style="color: red;"></p> <!-- Error message display -->
+    </div>
+
+    <script>
+        // Track if form has been changed
+        let formChanged = false;
+
+        // Mark form as changed when user enters data
+        document.getElementById("addClientForm").addEventListener("input", function() {
+            formChanged = true;
+        });
+
+        // Main function to add client
+        function addClient() {
+            const client = {
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                caseNumber: document.getElementById('caseNumber').value,
+                dob: document.getElementById('dob').value,
+                gender: document.getElementById('gender').value,
+                language: document.getElementById('language').value,
+                residentialAddress: document.getElementById('residentialAddress').value,
+                mailingAddress: document.getElementById('mailingAddress').value,
+                phoneNumber: document.getElementById('phoneNumber').value,
+                collateralFirstName: document.getElementById('collateralFirstName').value,
+                collateralLastName: document.getElementById('collateralLastName').value,
+                relation: document.getElementById('relation').value,
+                collateralPhone: document.getElementById('collateralPhone').value,
+                collateralEmail: document.getElementById('collateralEmail').value,
+            };
+    
+            fetch('/api/clients', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(client),
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Client added successfully!');
+                    formChanged = false; // Reset formChanged flag after saving
+                    window.location.href = 'client_list.html';
+                } else {
+                    alert('Error adding client.');
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                document.getElementById('error-message').textContent = "There was an error saving the client data.";
+            });
+        }
+
+        // Confirm navigation if there are unsaved changes
+        function confirmNavigation() {
+            if (formChanged) {
+                return confirm("You have unsaved changes. If you navigate away, the information you've entered will not be saved. Are you sure you want to continue?");
+            }
+        }
+
+        // Confirm log out with unsaved changes
+        function confirmLogOut() {
+            if (formChanged) {
+                return confirm("You have unsaved changes. If you navigate away, the information you've entered will not be saved. Are you sure you want to continue?");
+            } else {
+                return confirm("Are you sure you want to log out?");
+            }
+        }
+    </script>
+</body>
+</html>
