@@ -35,6 +35,7 @@
                     <tr><td><strong>Date of Birth:</strong></td><td id="dob"></td></tr>
                     <tr><td><strong>Gender:</strong></td><td id="gender"></td></tr>
                     <tr><td><strong>Language:</strong></td><td id="language"></td></tr>
+                    <tr><td><strong>Estimated Monthly Hours:</strong></td><td id="estimatedHours"></td></tr>
                 </tbody>
             </table>
             <button onclick="editSection('demographics')">Edit Demographics</button>
@@ -63,8 +64,50 @@
             </table>
             <button onclick="editSection('collateralContacts')">Edit Collateral Contacts</button>
 
+            <!-- Estimate Hours Button -->
+            <button id="getEstimatedHoursButton" onclick="getEstimatedHours()">Get Estimated Hours</button>
+
             <!-- Close the Case Button -->
             <button id="closeCaseButton" onclick="closeCase()">Close the Case</button>
+            
+            <!-- Delete Case Button -->
+            <button id="deleteCaseButton" onclick="deleteCase()">Delete the Case</button>
+
+            <script>
+                // Function to delete a client's case
+                function deleteCase() {
+                    const selectedClientId = localStorage.getItem("selectedClientId");
+
+                    if (!selectedClientId) {
+                        alert("No client is currently selected.");
+                        return;
+                    }
+
+                    const confirmation = confirm("Are you sure you want to delete this client case? This action cannot be undone.");
+
+                    if (confirmation) {
+                        // Make a DELETE request to the server
+                        fetch(`/api/clients/${selectedClientId}`, {
+                            method: 'DELETE',
+                        })
+                        .then(response => {
+                            if (response.ok) {
+                                alert("Client case deleted successfully!");
+                                localStorage.removeItem("selectedClientId");
+                                window.location.href = "client_list.html"; // Redirect to client list
+                            } else {
+                                throw new Error("Failed to delete the client case.");
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Error deleting client case:", error);
+                            alert("Failed to delete the client case. Please try again.");
+                        });
+                    }
+                }
+
+            </script>
+
         </div>
     </div>    
 
@@ -93,6 +136,9 @@
                         document.getElementById("relation").textContent = client.relation;
                         document.getElementById("collateralPhone").textContent = client.collateralPhone;
                         document.getElementById("collateralEmail").textContent = client.collateralEmail;
+                        document.getElementById("estimatedHours").textContent = client.estimatedMonthlyHour
+                            ? `${client.estimatedMonthlyHour} hours`
+                            : "Not available";
                     } else {
                         document.getElementById("clientName").textContent = "Client not found.";
                     }
@@ -159,6 +205,53 @@
             localStorage.removeItem("selectedClientId");
             alert("The case has been closed. You can now open another case.");
         }
+
+        function getEstimatedHours() {
+            const selectedClientId = localStorage.getItem("selectedClientId");
+
+            if (!selectedClientId) {
+                alert("No client is currently selected.");
+                return;
+            }
+
+            // Fetch the estimated hours from the microservice
+            fetch("http://localhost:5678/EstimateHours", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ caseNumber: selectedClientId }),
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Failed to get estimated hours from microservice.");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const estimatedHours = data.estimatedMonthlyHour;
+
+                    // Update the client's estimated hours in the browser
+                    document.getElementById("estimatedHours").textContent = `${estimatedHours} hours`;
+
+                    // Save the estimated hours to the backend
+                    return fetch(`/api/clients/${selectedClientId}`, {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ estimatedMonthlyHour: estimatedHours }),
+                    });
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Failed to save estimated hours.");
+                    }
+                    alert("Estimated hours saved successfully!");
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    alert("Failed to estimate hours. Please try again later.");
+                });
+        }
+
+
 
         function confirmNavigation() {
             return confirm("Are you sure you want to log out?");

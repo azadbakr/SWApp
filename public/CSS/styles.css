@@ -305,24 +305,6 @@ legend {
     border-bottom: none;
 }
 
-#closeCaseButton {
-    display: block;
-    width: 100%;
-    padding: 0.75rem;
-    margin-top: 1.5rem;
-    background-color: #d9534f; /* Red color to indicate closure */
-    color: white;
-    font-size: 1rem;
-    font-weight: bold;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-#closeCaseButton:hover {
-    background-color: #c9302c;
-}
 
 /* Styling for the Log Out link */
 .logout-link {
@@ -379,5 +361,63 @@ legend {
 
 #searchResults tr:hover {
     background-color: #e0e0e0;
+}
+
+
+#getEstimatedHoursButton {
+    display: block;
+    width: 100%;
+    padding: 0.75rem;
+    margin-top: 1.5rem;
+    background-color: #026cf7;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#getEstimatedHoursButtonn:hover {
+    background-color: #024195;
+}
+
+#closeCaseButton {
+    display: block;
+    width: 100%;
+    padding: 0.75rem;
+    margin-top: 1.5rem;
+    background-color: #d9534f;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#closeCaseButton:hover {
+    background-color: #c9302c;
+}
+
+#deleteCaseButton {
+    display: block;
+    width: 100%;
+    padding: 0.75rem;
+    margin-top: 1.5rem;
+    background-color: #000;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#deleteCaseButton:hover {
+    background-color: #444;
 }
 

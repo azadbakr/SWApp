@@ -70,6 +70,35 @@ app.put('/api/clients/:caseNumber', (req, res) => {
     });
 });
 
+
+// Route to delete a client by caseNumber
+app.delete('/api/clients/:caseNumber', (req, res) => {
+    const caseNumber = req.params.caseNumber;
+
+    fs.readFile(filePath, 'utf-8', (err, data) => {
+        if (err) {
+            return res.status(500).send('Error reading client data');
+        }
+
+        const clients = JSON.parse(data);
+        const updatedClients = clients.filter(client => client.caseNumber !== caseNumber);
+
+        if (clients.length === updatedClients.length) {
+            return res.status(404).send('Client not found');
+        }
+
+        fs.writeFile(filePath, JSON.stringify(updatedClients, null, 2), (err) => {
+            if (err) {
+                return res.status(500).send('Error updating client data');
+            }
+            res.status(200).send('Client deleted successfully');
+        });
+    });
+});
+
+
+
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
+
