@@ -174,7 +174,25 @@
     "relation": "Uncle",
     "collateralPhone": "2532251763",
     "collateralEmail": "DavidM@email.com",
-    "estimatedMonthlyHour": 390
+    "estimatedMonthlyHour": 390,
+    "assignedAgencies": [
+      {
+        "agencyName": "ElderCare Assist",
+        "hours": 39
+      },
+      {
+        "agencyName": "Comfort Home Care",
+        "hours": 47
+      },
+      {
+        "agencyName": "Golden Years Agency",
+        "hours": 31
+      },
+      {
+        "agencyName": "Helping Hands Care",
+        "hours": 273
+      }
+    ]
   },
   {
     "firstName": "David",
@@ -208,6 +226,20 @@
     "relation": "Aunt",
     "collateralPhone": "2532251763",
     "collateralEmail": "KimM@email.com",
-    "estimatedMonthlyHour": 360
+    "estimatedMonthlyHour": 360,
+    "assignedAgencies": [
+      {
+        "agencyName": "ElderCare Assist",
+        "hours": 4
+      },
+      {
+        "agencyName": "Trusted Caregivers",
+        "hours": 35
+      },
+      {
+        "agencyName": "Silver Linings Services",
+        "hours": 321
+      }
+    ]
   }
 ]

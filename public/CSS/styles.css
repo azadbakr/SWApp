@@ -308,7 +308,7 @@ legend {
 
 /* Styling for the Log Out link */
 .logout-link {
-    color: #d9534f; /* Red color for the Log Out link */
+    color: #d9534f;
     font-weight: bold;
     transition: color 0.3s;
     background-color: #c9302c;
@@ -363,61 +363,106 @@ legend {
     background-color: #e0e0e0;
 }
 
+/* Inline Action Buttons Section */
+.action-buttons-section-inline {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding: 1rem;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 
-#getEstimatedHoursButton {
-    display: block;
-    width: 100%;
-    padding: 0.75rem;
-    margin-top: 1.5rem;
-    background-color: #026cf7;
-    color: white;
-    font-size: 1rem;
+/* General Styling for Inline Action Buttons */
+.inline-action-button {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
     font-weight: bold;
+    color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
-#getEstimatedHoursButtonn:hover {
+/* Hover Effect for Buttons */
+.inline-action-button:hover {
+    transform: translateY(-1px);
+}
+
+/* Specific Button Colors */
+.inline-action-button#getEstimatedHoursButton {
+    background-color: #026cf7;
+}
+
+.inline-action-button#getEstimatedHoursButton:hover {
     background-color: #024195;
 }
 
-#closeCaseButton {
-    display: block;
-    width: 100%;
-    padding: 0.75rem;
-    margin-top: 1.5rem;
+.inline-action-button.close-button {
     background-color: #d9534f;
-    color: white;
-    font-size: 1rem;
-    font-weight: bold;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
 }
 
-#closeCaseButton:hover {
-    background-color: #c9302c;
+.inline-action-button.close-button:hover {
+    background-color: #9d1c17;
 }
 
-#deleteCaseButton {
-    display: block;
-    width: 100%;
-    padding: 0.75rem;
-    margin-top: 1.5rem;
+.inline-action-button.delete-button {
     background-color: #000;
-    color: white;
-    font-size: 1rem;
-    font-weight: bold;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
 }
 
-#deleteCaseButton:hover {
+.inline-action-button.delete-button:hover {
     background-color: #444;
+}
+
+
+/* Caregiver Assignment Table Section */
+#assignedAgenciesTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+#assignedAgenciesTable th, #assignedAgenciesTable td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+#assignedAgenciesTable th {
+    background-color: #a3a3a3;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+#assignedAgenciesTable tr:hover {
+    background-color: #e0e0e0;
+}
+
+/* Center the table container */
+.details-container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 1.5rem;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.details-container h3 {
+    margin-top: 1.5rem;
+    font-size: 1.5rem;
+    color: #4CAF50;
+    border-bottom: 2px solid #4CAF50;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
 }
 

@@ -64,14 +64,34 @@
             </table>
             <button onclick="editSection('collateralContacts')">Edit Collateral Contacts</button>
 
-            <!-- Estimate Hours Button -->
-            <button id="getEstimatedHoursButton" onclick="getEstimatedHours()">Get Estimated Hours</button>
+            <!-- Caregiving Agencies Section -->
+            <h3>Assigned Agencies</h3>
+            <table id="assignedAgenciesTable">
+                <thead>
+                    <tr>
+                        <th>Agency Name</th>
+                        <th>Assigned Hours</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Assigned agencies will be dynamically added here -->
+                </tbody>
+            </table>
+            <button id="assignAgenciesButton" onclick="assignAgencies()">Assign Caregiving Agencies</button>
 
-            <!-- Close the Case Button -->
-            <button id="closeCaseButton" onclick="closeCase()">Close the Case</button>
+            <h3>Case Management Actions</h3>
+            <div class="action-buttons-section-inline">
+           
+                <!-- Estimate Hours Button -->
+                <button id="getEstimatedHoursButton" class="inline-action-button" onclick="getEstimatedHours()">Get Estimated Hours</button>
             
-            <!-- Delete Case Button -->
-            <button id="deleteCaseButton" onclick="deleteCase()">Delete the Case</button>
+                <!-- Close the Case Button -->
+                <button id="closeCaseButton" class="inline-action-button close-button" onclick="closeCase()">Close the Case</button>
+            
+                <!-- Delete Case Button -->
+                <button id="deleteCaseButton" class="inline-action-button delete-button" onclick="deleteCase()">Delete the Case</button>
+            
+            </div>            
 
             <script>
                 // Function to delete a client's case
@@ -119,7 +139,6 @@
                 .then(response => response.json())
                 .then(clients => {
                     const client = clients.find(client => client.caseNumber === selectedClientId);
-                    
                     if (client) {
                         document.getElementById("clientName").textContent = `${client.firstName} ${client.lastName}`;
                         document.getElementById("firstName").textContent = client.firstName;
@@ -139,6 +158,9 @@
                         document.getElementById("estimatedHours").textContent = client.estimatedMonthlyHour
                             ? `${client.estimatedMonthlyHour} hours`
                             : "Not available";
+                        if (client.assignedAgencies) {
+                            displayAssignedAgencies(client.assignedAgencies);
+                        }
                     } else {
                         document.getElementById("clientName").textContent = "Client not found.";
                     }
@@ -146,7 +168,59 @@
                 .catch(error => console.error('Error fetching client details:', error));
         }
 
-        displayClientDetails();
+        function displayAssignedAgencies(agencies) {
+            const agenciesTable = document.getElementById("assignedAgenciesTable").querySelector("tbody");
+            agenciesTable.innerHTML = "";
+            agencies.forEach(agency => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${agency.agencyName}</td>
+                    <td>${agency.hours} hours</td>
+                `;
+                agenciesTable.appendChild(row);
+            });
+        }
+
+        function assignAgencies() {
+            fetch('/api/clients')
+                .then(response => response.json())
+                .then(clients => {
+                    const client = clients.find(c => c.caseNumber === selectedClientId);
+                    if (!client || !client.estimatedMonthlyHour) {
+                        alert("Estimated hours not available.");
+                        return;
+                    }
+
+                    fetch("http://localhost:5679/AssignAgencies", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            caseNumber: selectedClientId,
+                            estimatedMonthlyHour: client.estimatedMonthlyHour,
+                        }),
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.error) {
+                                alert(data.error);
+                                return;
+                            }
+                            const assignedAgencies = data.assignedAgencies;
+
+                            fetch(`/api/clients/${selectedClientId}`, {
+                                method: "PUT",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({ assignedAgencies }),
+                            })
+                                .then(() => {
+                                    alert("Agencies assigned successfully!");
+                                    displayAssignedAgencies(assignedAgencies);
+                                })
+                                .catch(() => alert("Failed to save agencies."));
+                        })
+                        .catch(() => alert("Failed to assign agencies."));
+                });
+        }
 
         // Make fields editable and save changes
         function editSection(section) {
@@ -202,6 +276,12 @@
         function closeCase() {
             document.getElementById("clientName").textContent = "";
             document.querySelectorAll("#demographicsTable td, #contactInfoTable td, #collateralContactsTable td").forEach(td => td.textContent = "");
+            document.getElementById("estimatedHours").textContent = "";
+
+            // Clear the caregiving section
+            const agenciesTable = document.getElementById("assignedAgenciesTable").querySelector("tbody");
+            agenciesTable.innerHTML = "";
+            
             localStorage.removeItem("selectedClientId");
             alert("The case has been closed. You can now open another case.");
         }
@@ -251,11 +331,12 @@
                 });
         }
 
-
-
         function confirmNavigation() {
             return confirm("Are you sure you want to log out?");
         }
+
+        displayClientDetails();
+
     </script>
 </body>
 </html>
